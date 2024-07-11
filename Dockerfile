@@ -12,6 +12,6 @@ COPY . .
 
 RUN yarn
 
-EXPOSE 3000
+EXPOSE 3003
 
 CMD [ "serve", "-s", "dist" ]
