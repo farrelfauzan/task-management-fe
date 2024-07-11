@@ -21,7 +21,7 @@ const Home = () => {
   const dispatch = useDispatch();
   const task = useSelector(taskData);
 
-  const [columns, setColumns] = useState<Columns>(task);
+  const [_columns, _setColumns] = useState<Columns>(task);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedColumn, setSelectedColumn] = useState("");
   const [taskId, setTaskId] = useState("");
@@ -70,7 +70,7 @@ const Home = () => {
               ? task[result.destination.droppableId].items
               : [
                   ...task[result.source.droppableId].items.filter(
-                    (item: any, index: any) => index !== result.source.index
+                    (_item: any, index: any) => index !== result.source.index
                   ),
                   task[result.source.droppableId].items[result.source.index],
                 ],
@@ -81,7 +81,7 @@ const Home = () => {
             result.destination.droppableId === result.source.droppableId
               ? task[result.source.droppableId].items
               : task[result.source.droppableId].items.filter(
-                  (item: any, index: any) => index !== result.source.index
+                  (_item: any, index: any) => index !== result.source.index
                 ),
         },
         [result.destination.droppableId]: {

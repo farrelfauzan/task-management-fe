@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import { Task, UpdateTaskDto, User } from "../../swagger/api";
+import { UpdateTaskDto, User } from "../../swagger/api";
 import {
   deleteTask,
   taskDetail,
@@ -232,6 +232,7 @@ const DetailModal = ({
       </form>
       {openDeleteModal && (
         <ConfirmDeleteModal
+          taskId={taskId}
           isOpen={openDeleteModal}
           onClose={onCloseDeleteModal}
           setOpen={setOpenDeleteModal}

@@ -2,7 +2,7 @@ import { AppsOutline, LogOutOutline, SettingsOutline } from "react-ionicons";
 import { useDispatch } from "react-redux";
 import { sessionData, setSession } from "../../lib/features/session/session";
 import { useCookies } from "react-cookie";
-import { Link, useNavigate, useNavigation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Users2Icon } from "lucide-react";
 import { useSelector } from "react-redux";
 
@@ -11,7 +11,7 @@ const Sidebar = () => {
 
   const session = useSelector(sessionData);
 
-  const [cookies, setCookie, removeCookie] = useCookies(["_auth_token"]);
+  const [_cookies, _setCookie, removeCookie] = useCookies(["_auth_token"]);
 
   function onLogout() {
     dispatch(setSession({ user: null, role: null, isLoggedIn: false }));

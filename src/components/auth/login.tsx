@@ -23,7 +23,7 @@ const Login = () => {
   const loginErrorMessage = useSelector(errorMessage);
   const loading = useSelector(loadingAuth);
 
-  const [cookies, setCookie] = useCookies(["_auth_token"]);
+  const [_cookies, setCookie] = useCookies(["_auth_token"]);
 
   const {
     register,

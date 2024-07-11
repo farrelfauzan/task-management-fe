@@ -11,11 +11,7 @@ const CommentSection = () => {
   const dispatch = useDispatch();
   const comments = useSelector(commentsData);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<CreateCommentDto>();
+  const { register, handleSubmit } = useForm<CreateCommentDto>();
 
   const onSubmit: SubmitHandler<CreateCommentDto> = async (data) => {
     console.log(data);

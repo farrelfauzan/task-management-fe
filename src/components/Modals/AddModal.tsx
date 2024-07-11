@@ -35,8 +35,6 @@ const AddModal = ({
     handleSubmit,
     formState: { errors },
     reset,
-    setError,
-    setValue,
   } = useForm<CreateTaskDto>({
     defaultValues: {
       title: "",
