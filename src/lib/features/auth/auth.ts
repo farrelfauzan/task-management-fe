@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Api, User } from "../../../swagger/api";
 import { api } from "../../../plugins/service";
 import { RootState } from "../../store";
-import { RootStateOrAny } from "react-redux";
 
 export type LoginAuthResonseDto = {
   user: User;
@@ -81,8 +80,8 @@ export const loginReducer = createSlice({
 
 export const { setAuthData, setErrorMessageAuth } = loginReducer.actions;
 
-export const authData = (state: RootStateOrAny) => state.auth.data;
-export const errorMessage = (state: RootStateOrAny) => state.auth.errorMessage;
-export const loadingAuth = (state: RootStateOrAny) => state.auth.loading;
+export const authData = (state: RootState) => state.auth.data;
+export const errorMessage = (state: RootState) => state.auth.errorMessage;
+export const loadingAuth = (state: RootState) => state.auth.loading;
 
 export default loginReducer.reducer;
