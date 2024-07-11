@@ -1,3 +1,4 @@
+import { Cookies } from "react-cookie";
 import { Api } from "../swagger/api";
 import { AxiosError } from "axios";
 
@@ -11,7 +12,12 @@ export const api = new Api({
 api.instance.interceptors.request.use(
   (config: any) => {
     console.log("Service Requesting ...", config.url);
+    const cookies = new Cookies();
+    const token = cookies.get("_auth_token");
 
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
     return config;
   },
   (error) => {

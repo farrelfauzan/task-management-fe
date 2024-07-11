@@ -11,6 +11,7 @@ import { setSession } from "../../lib/features/session/session";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
+import { useCookies } from "react-cookie";
 
 type Inputs = {
   email: string;
@@ -21,6 +22,8 @@ const Login = () => {
   const dispatch = useDispatch();
   const loginErrorMessage = useSelector(errorMessage);
   const loading = useSelector(loadingAuth);
+
+  const [cookies, setCookie] = useCookies(["_auth_token"]);
 
   const {
     register,
@@ -34,6 +37,9 @@ const Login = () => {
       if (response.error) {
         throw new Error(response.error.message);
       }
+      setCookie("_auth_token", response.payload.bearerToken, {
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30),
+      });
       dispatch(
         setSession({
           user: response.payload.user,

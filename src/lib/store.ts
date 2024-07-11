@@ -3,20 +3,22 @@ import { persistReducer, persistStore } from "redux-persist";
 
 import storage from "../storage";
 
-import taskReducer from "./features/Task/task";
+import taskReducer from "./features/task/task";
 import authReducer from "./features/auth/auth";
 import sessionReducer from "./features/session/session";
+import userReducer from "./features/user/user";
 
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["task", "auth"],
+  blacklist: ["task", "auth", "user"],
 };
 
 const reducer = combineReducers({
   task: taskReducer,
   auth: authReducer,
   session: sessionReducer,
+  user: userReducer,
 });
 
 const PersistedReducer = persistReducer(persistConfig, reducer);

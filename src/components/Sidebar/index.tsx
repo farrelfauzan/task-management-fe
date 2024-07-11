@@ -1,11 +1,16 @@
 import { AppsOutline, LogOutOutline } from "react-ionicons";
 import { useDispatch } from "react-redux";
 import { setSession } from "../../lib/features/session/session";
+import { useCookies } from "react-cookie";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
+
+  const [cookies, setCookie, removeCookie] = useCookies(["_auth_token"]);
+
   function onLogout() {
     dispatch(setSession({ user: null, role: null, isLoggedIn: false }));
+    removeCookie("_auth_token");
   }
   const navLinks = [
     // {
