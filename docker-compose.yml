@@ -5,6 +5,6 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "${EXPOSED_PORT}:3003"
+      - "${EXPOSED_PORT}:3000"
     env_file:
       - .env
