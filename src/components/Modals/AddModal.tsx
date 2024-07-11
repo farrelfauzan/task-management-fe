@@ -8,17 +8,10 @@ import { useSelector } from "react-redux";
 import { createTask } from "../../lib/features/task/task";
 import { toast } from "react-toastify";
 
-interface Tag {
-  title: string;
-  bg: string;
-  text: string;
-}
-
 interface AddModalProps {
   isOpen: boolean;
   onClose: () => void;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  // handleAddTask: (taskData: any) => void;
   defaultStatus: string;
 }
 
@@ -27,46 +20,15 @@ const AddModal = ({
   onClose,
   setOpen,
   defaultStatus,
-  // handleAddTask,
 }: AddModalProps) => {
   const dispatch = useDispatch();
 
   const users = useSelector(userData);
 
-  // const initialTaskData = {
-  //   id: uuidv4(),
-  //   title: "",
-  //   description: "",
-  //   priority: "",
-  //   deadline: 0,
-  //   image: "",
-  //   alt: "",
-  //   tags: [] as Tag[],
-  // };
-
-  // const [taskData, setTaskData] = useState(initialTaskData);
-  // const [tagTitle, setTagTitle] = useState("");
-
-  // const handleChange = (
-  //   e: React.ChangeEvent<
-  //     HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-  //   >
-  // ) => {
-  //   const { name, value } = e.target;
-  //   setTaskData({ ...taskData, [name]: value });
-  // };
-
   const closeModal = () => {
     setOpen(false);
     onClose();
-    // setTaskData(initialTaskData);
-    // reset();
   };
-
-  // const handleSubmit = () => {
-  //   handleAddTask(taskData);
-  //   closeModal();
-  // };
 
   const {
     register,
@@ -185,29 +147,6 @@ const AddModal = ({
               <span className="text-red-500">Description is required</span>
             )}
           </div>
-          {/* <div className="w-full">
-            <label
-              htmlFor="status"
-              className="block mb-2 text-sm font-medium text-gray-900"
-            >
-              Status
-            </label>
-            <select
-              {...register("status")}
-              className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400"
-              id="status"
-            >
-              <option value="">Status</option>
-              <option value="backlog">Backlog</option>
-              <option value="pending">Pending</option>
-              <option value="todo">To Do</option>
-              <option value="inprogress">In Progress</option>
-              <option value="done">Done</option>
-            </select>
-            {errors.status && (
-              <span className="text-red-500">Status is required</span>
-            )}
-          </div> */}
           <div className="w-full">
             <label
               htmlFor="dueDate"
@@ -238,7 +177,7 @@ const AddModal = ({
               className="w-full p-2 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-400"
             >
               {users.map((user: User) => (
-                <option value={user.id}>
+                <option value={user.id} key={user.id}>
                   {user.firstName} {user.lastName}
                 </option>
               ))}
@@ -255,56 +194,6 @@ const AddModal = ({
           </button>
         </div>
       </form>
-      {/* <div className="md:w-[30vw] w-[90%] bg-white rounded-lg shadow-md z-50 flex flex-col items-center gap-3 px-5 py-6">
-        <input
-          type="text"
-          name="title"
-          value={taskData.title}
-          onChange={handleChange}
-          placeholder="Title"
-          className="w-full h-12 px-3 outline-none rounded-md bg-slate-100 border border-slate-300 text-sm font-medium"
-        />
-        <input
-          type="text"
-          name="description"
-          value={taskData.description}
-          onChange={handleChange}
-          placeholder="Description"
-          className="w-full h-12 px-3 outline-none rounded-md bg-slate-100 border border-slate-300 text-sm font-medium"
-        />
-        <select
-          name="priority"
-          onChange={handleChange}
-          value={taskData.priority}
-          className="w-full h-12 px-2 outline-none rounded-md bg-slate-100 border border-slate-300 text-sm"
-        >
-          <option value="">Priority</option>
-          <option value="low">Low</option>
-          <option value="medium">Medium</option>
-          <option value="high">High</option>
-        </select>
-        <input
-          type="number"
-          name="deadline"
-          value={taskData.deadline}
-          onChange={handleChange}
-          placeholder="Deadline"
-          className="w-full h-12 px-3 outline-none rounded-md bg-slate-100 border border-slate-300 text-sm"
-        />
-        <input
-          type="text"
-          value={tagTitle}
-          onChange={(e) => setTagTitle(e.target.value)}
-          placeholder="Tag Title"
-          className="w-full h-12 px-3 outline-none rounded-md bg-slate-100 border border-slate-300 text-sm"
-        />
-        <button
-          className="w-full mt-3 rounded-md h-9 bg-orange-400 text-blue-50 font-medium"
-          // onClick={handleSubmit}
-        >
-          Submit Task
-        </button>
-      </div> */}
     </div>
   );
 };

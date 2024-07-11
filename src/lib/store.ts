@@ -7,11 +7,12 @@ import taskReducer from "./features/task/task";
 import authReducer from "./features/auth/auth";
 import sessionReducer from "./features/session/session";
 import userReducer from "./features/user/user";
+import commentReducer from "./features/comment/comment";
 
 const persistConfig = {
   key: "root",
   storage,
-  blacklist: ["task", "auth", "user"],
+  blacklist: ["task", "auth", "user", "comment"],
 };
 
 const reducer = combineReducers({
@@ -19,6 +20,7 @@ const reducer = combineReducers({
   auth: authReducer,
   session: sessionReducer,
   user: userReducer,
+  comment: commentReducer,
 });
 
 const PersistedReducer = persistReducer(persistConfig, reducer);

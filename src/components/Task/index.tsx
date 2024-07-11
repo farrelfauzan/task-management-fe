@@ -2,13 +2,15 @@
 import { TimeOutline } from "react-ionicons";
 import { TaskT } from "../../types";
 import dayjs from "dayjs";
+import { Ellipsis } from "lucide-react";
 
 interface TaskProps {
   task: TaskT;
   provided: any;
+  onClickDetail: (id: string) => void;
 }
 
-const Task = ({ task, provided }: TaskProps) => {
+const Task = ({ task, provided, onClickDetail }: TaskProps) => {
   const { title, description, dueDate, id, status } = task;
 
   return (
@@ -18,9 +20,15 @@ const Task = ({ task, provided }: TaskProps) => {
       {...provided.dragHandleProps}
       className="w-full cursor-grab bg-[#fff] flex flex-col justify-between gap-3 items-start shadow-sm rounded-xl px-3 py-4"
     >
-      <div className="w-full flex items-start flex-col gap-0">
-        <span className="text-[15.5px] font-medium text-[#555]">{title}</span>
-        <span className="text-[13.5px] text-gray-500">{description}</span>
+      <div className="w-full flex justify-between items-center">
+        <div className="flex flex-col">
+          <span className="text-[15.5px] font-medium text-[#555]">{title}</span>
+          <span className="text-[13.5px] text-gray-500">{description}</span>
+        </div>
+        <Ellipsis
+          className="cursor-pointer"
+          onClick={() => onClickDetail(id)}
+        />
       </div>
       <div className="w-full border border-dashed"></div>
       <div className="w-full flex items-center justify-between">

@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../store";
-import { Api, Task } from "../../../swagger/api";
+import { Api, Task, UpdateTaskDto } from "../../../swagger/api";
 import { api } from "../../../plugins/service";
 import { Columns } from "../../../types";
 
@@ -13,7 +13,7 @@ export type TaskManagementType = {
     name: string;
     items: Task[];
   };
-  inProgress: {
+  inprogress: {
     name: string;
     items: Task[];
   };
@@ -37,7 +37,7 @@ const initialState = {
       name: "Pending",
       items: [],
     },
-    inProgress: {
+    inprogress: {
       name: "In Progress",
       items: [],
     },
@@ -50,6 +50,7 @@ const initialState = {
       items: [],
     },
   } as Columns,
+  task: {} as Task,
   loading: false,
   error: null,
 };
@@ -75,12 +76,40 @@ export const createTask: any = createAsyncThunk(
   }
 );
 
+export const updateTask: any = createAsyncThunk(
+  "task/updateTask",
+  async ({ id, data }: { id: string; data: UpdateTaskDto }) => {
+    console.log(id, data);
+    try {
+      const response = await api.task.taskControllerUpdate(id, data);
+      return response.data;
+    } catch (error: any) {
+      throw error.response.data.message;
+    }
+  }
+);
+
+export const deleteTask: any = createAsyncThunk(
+  "task/deleteTask",
+  async (...args: Parameters<Api<any>["task"]["taskControllerRemove"]>) => {
+    try {
+      const response = await api.task.taskControllerRemove(...args);
+      return response.data;
+    } catch (error: any) {
+      throw error.response.data.message;
+    }
+  }
+);
+
 export const taskReducer = createSlice({
   name: "task",
   initialState,
   reducers: {
     setData: (state, action: PayloadAction<Columns>) => {
       state.data = action.payload;
+    },
+    setTask: (state, action: PayloadAction<Task>) => {
+      state.task = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -117,9 +146,9 @@ export const taskReducer = createSlice({
             };
           }
           if (item.status === "inprogress") {
-            result.inProgress = {
+            result.inprogress = {
               name: "In Progress",
-              items: [...(result.inProgress?.items || []), item],
+              items: [...(result.inprogress?.items || []), item],
             };
           }
           if (item.status === "done") {
@@ -182,11 +211,93 @@ export const taskReducer = createSlice({
       .addCase(createTask.pending, (state) => {
         state.loading = true;
       });
+    builder
+      .addCase(updateTask.fulfilled, (state, action) => {
+        if (action.payload.status === "todo") {
+          state.data.todo.items = state.data.todo.items.map((item) =>
+            item.id === action.payload.id ? action.payload : item
+          );
+        }
+        if (action.payload.status === "inprogress") {
+          state.data.inprogress.items = state.data.inprogress.items.map(
+            (item) => (item.id === action.payload.id ? action.payload : item)
+          );
+        }
+        if (action.payload.status === "done") {
+          state.data.done.items = state.data.done.items.map((item) =>
+            item.id === action.payload.id ? action.payload : item
+          );
+        }
+        if (action.payload.status === "pending") {
+          state.data.pending.items = state.data.pending.items.map((item) =>
+            item.id === action.payload.id ? action.payload : item
+          );
+        }
+        if (action.payload.status === "backlog") {
+          state.data.backlog.items = state.data.backlog.items.map((item) =>
+            item.id === action.payload.id ? action.payload : item
+          );
+        }
+
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(updateTask.rejected, (state, action) => {
+        state.error = action.error;
+        state.loading = false;
+      })
+      .addCase(updateTask.pending, (state) => {
+        state.loading = true;
+      });
+    builder
+      .addCase(deleteTask.fulfilled, (state, action) => {
+        console.log(action.payload);
+        if (action.payload.status === "todo") {
+          // remove item
+          const result = state.data.todo.items.filter(
+            (item) => item.title !== action.payload.title
+          );
+          state.data.todo.items = result;
+        }
+        if (action.payload.status === "inprogress") {
+          state.data.inprogress.items = state.data.inprogress.items.filter(
+            (item) => item.title !== action.payload.ititled
+          );
+        }
+        if (action.payload.status === "done") {
+          state.data.done.items = state.data.done.items.filter(
+            (item) => item.title !== action.payload.title
+          );
+        }
+        if (action.payload.status === "pending") {
+          state.data.pending.items = state.data.pending.items.filter(
+            (item) => item.title !== action.payload.title
+          );
+        }
+        if (action.payload.status === "backlog") {
+          state.data.backlog.items = state.data.backlog.items.filter(
+            (item) => item.title !== action.payload.title
+          );
+        }
+
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteTask.rejected, (state, action) => {
+        state.error = action.error;
+        state.loading = false;
+      })
+      .addCase(deleteTask.pending, (state) => {
+        state.loading = true;
+      });
   },
 });
 
-export const { setData } = taskReducer.actions;
+export const { setData, setTask } = taskReducer.actions;
 
 export const taskData = (state: RootState) => state.task.data;
+export const loadingTask = (state: RootState) => state.task.loading;
+export const taskError = (state: RootState) => state.task.error;
+export const taskDetail = (state: RootState) => state.task.task;
 
 export default taskReducer.reducer;

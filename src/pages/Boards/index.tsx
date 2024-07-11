@@ -1,16 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect, useState } from "react";
-// import { Board } from "../../data/board";
 import { Columns } from "../../types";
-import { onDragEnd } from "../../helpers/onDragEnd";
 import { AddOutline } from "react-ionicons";
 import AddModal from "../../components/Modals/AddModal";
 import Task from "../../components/Task";
 import { useDispatch } from "react-redux";
-import { getTasks, taskData } from "../../lib/features/task/task";
+import {
+  getTasks,
+  setData,
+  setTask,
+  taskData,
+  updateTask,
+} from "../../lib/features/task/task";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
+import DetailModal from "../../components/Modals/DetailModal";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -19,6 +24,9 @@ const Home = () => {
   const [columns, setColumns] = useState<Columns>(task);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedColumn, setSelectedColumn] = useState("");
+  const [taskId, setTaskId] = useState("");
+
+  const [modalDetailOpen, setModalDetailOpen] = useState(false);
 
   const openModal = (columnId: any) => {
     console.log(columnId);
@@ -26,13 +34,12 @@ const Home = () => {
     setModalOpen(true);
   };
 
-  const closeModal = () => {
-    setModalOpen(false);
+  const onCloseModalDetail = () => {
+    setModalDetailOpen(false);
   };
 
-  const handleAddTask = (taskData: any) => {
-    const newBoard = { ...columns };
-    newBoard[selectedColumn].items.push(taskData);
+  const closeModal = () => {
+    setModalOpen(false);
   };
 
   const addNewTask = () => {
@@ -50,9 +57,70 @@ const Home = () => {
     fetchData();
   }, []);
 
-  console.log(columns);
-
   console.log(task);
+
+  async function onDragEnd(result: any) {
+    dispatch(
+      setData({
+        ...task,
+        [result.destination.droppableId]: {
+          ...task[result.destination.droppableId],
+          items:
+            result.destination.droppableId === result.source.droppableId
+              ? task[result.destination.droppableId].items
+              : [
+                  ...task[result.source.droppableId].items.filter(
+                    (item: any, index: any) => index !== result.source.index
+                  ),
+                  task[result.source.droppableId].items[result.source.index],
+                ],
+        },
+        [result.source.droppableId]: {
+          ...task[result.source.droppableId],
+          items:
+            result.destination.droppableId === result.source.droppableId
+              ? task[result.source.droppableId].items
+              : task[result.source.droppableId].items.filter(
+                  (item: any, index: any) => index !== result.source.index
+                ),
+        },
+        [result.destination.droppableId]: {
+          ...task[result.destination.droppableId],
+          items: [
+            ...task[result.destination.droppableId].items,
+            task[result.source.droppableId].items[result.source.index],
+          ],
+        },
+      })
+    );
+    try {
+      const payload = {
+        status: result.destination.droppableId,
+      };
+      const response = await dispatch(
+        updateTask({
+          id: task[result.source.droppableId].items[result.source.index].id,
+          data: payload,
+        })
+      );
+      if (response.payload) {
+        toast.success(
+          `Task updated to ${result.destination.droppableId.charAt(0).toUpperCase() + result.destination.droppableId.slice(1).toLowerCase()}`,
+          {
+            autoClose: 1500,
+          }
+        );
+      }
+
+      if (response.error) {
+        throw new Error("Failed to update task");
+      }
+    } catch (error) {
+      toast.error("Failed to update task", {
+        autoClose: 1500,
+      });
+    }
+  }
   return (
     <>
       {task && Object.keys(task).length === 0 ? (
@@ -70,7 +138,9 @@ const Home = () => {
         </div>
       ) : (
         <DragDropContext
-          onDragEnd={(result: any) => onDragEnd(result, columns, setColumns)}
+          onDragEnd={(result: any) => {
+            onDragEnd(result);
+          }}
         >
           <div className="w-full flex items-start justify-between px-5 pb-8 md:gap-0 gap-10">
             {task &&
@@ -94,7 +164,16 @@ const Home = () => {
                           >
                             {(provided: any) => (
                               <>
-                                <Task provided={provided} task={task} />
+                                <Task
+                                  provided={provided}
+                                  task={task}
+                                  onClickDetail={(id) => {
+                                    console.log("ini task", task);
+                                    dispatch(setTask(task));
+                                    setTaskId(id);
+                                    setModalDetailOpen(true);
+                                  }}
+                                />
                               </>
                             )}
                           </Draggable>
@@ -121,6 +200,14 @@ const Home = () => {
         setOpen={setModalOpen}
         defaultStatus={selectedColumn}
       />
+      {modalDetailOpen && (
+        <DetailModal
+          isOpen={modalDetailOpen}
+          onClose={onCloseModalDetail}
+          setOpen={setModalDetailOpen}
+          taskId={taskId}
+        />
+      )}
     </>
   );
 };

@@ -4,6 +4,7 @@ import Login from "../components/auth/login";
 import { Navigate, RouteObject } from "react-router-dom";
 import AuthLayout from "../layout/auth";
 import Register from "../components/auth/register";
+import Settings from "../pages/Settings";
 
 const routes = (isLoggedIn: boolean): RouteObject[] => {
   console.log(isLoggedIn);
@@ -23,6 +24,14 @@ const routes = (isLoggedIn: boolean): RouteObject[] => {
         {
           path: "boards",
           element: <Boards />,
+        },
+        {
+          path: "settings",
+          element: <Settings />,
+        },
+        {
+          path: "user-management",
+          element: <div>User Management</div>,
         },
       ],
     },
