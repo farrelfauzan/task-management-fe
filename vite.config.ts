@@ -8,4 +8,7 @@ export default defineConfig({
   esbuild: {
     ignoreAnnotations: true,
   },
+  build: {
+    chunkSizeWarningLimit: 10000,
+  },
 });
