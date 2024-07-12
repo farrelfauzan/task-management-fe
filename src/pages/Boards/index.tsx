@@ -3,8 +3,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect, useState } from "react";
 import { Columns } from "../../types";
 import { AddOutline } from "react-ionicons";
-import AddModal from "../../components/modals/AddModal";
-import Task from "../../components/task";
+import AddModal from "../../components/Modals/AddModal";
+import Task from "../../components/Task";
 import { useDispatch } from "react-redux";
 import {
   getTasks,
@@ -15,7 +15,7 @@ import {
 } from "../../lib/features/task/task";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import DetailModal from "../../components/modals/DetailModal";
+import DetailModal from "../../components/Modals/DetailModal";
 
 const Home = () => {
   const dispatch = useDispatch();

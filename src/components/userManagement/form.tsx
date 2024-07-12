@@ -7,9 +7,9 @@ import {
   userData,
 } from "../../lib/features/user/user";
 import { User } from "../../swagger/api";
-import ConfirmDeleteModal from "../modals/confirm-delete";
-import AddUserModal from "../modals/add-user";
-import EditUserModal from "../modals/edit-user";
+import ConfirmDeleteModal from "../Modals/confirm-delete";
+import AddUserModal from "../Modals/add-user";
+import EditUserModal from "../Modals/edit-user";
 
 const UserItem = ({
   user,
