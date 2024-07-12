@@ -68,7 +68,6 @@ export const loginReducer = createSlice({
         state.errorMessage = "";
       })
       .addCase(CreateUser.rejected, (state, action) => {
-        console.log(action);
         state.errorMessage = action.error.message as string;
         state.loading = false;
       })

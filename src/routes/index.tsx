@@ -5,9 +5,9 @@ import { Navigate, RouteObject } from "react-router-dom";
 import AuthLayout from "../layout/auth";
 import Register from "../components/auth/register";
 import Settings from "../pages/Settings";
+import UserManagement from "../pages/userManagement";
 
 const routes = (isLoggedIn: boolean): RouteObject[] => {
-  console.log(isLoggedIn);
   return [
     {
       path: "/", // Public route
@@ -31,7 +31,7 @@ const routes = (isLoggedIn: boolean): RouteObject[] => {
         },
         {
           path: "user-management",
-          element: <div>User Management</div>,
+          element: <UserManagement />,
         },
       ],
     },

@@ -4,7 +4,6 @@ interface ConfirmDeleteModalProps {
   isOpen: boolean;
   onClose: () => void;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  taskId: string;
   onClickDelete: () => void;
 }
 
@@ -31,7 +30,7 @@ const ConfirmDeleteModal = ({
       ></div>
       <div className="bg-white w-1/3 h-1/4 z-30 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 rounded-md shadow-lg p-6">
         <h1 className="text-2xl font-bold mb-4">Confirm Delete</h1>
-        <p className="mb-4">Are you sure you want to delete this task?</p>
+        <p className="mb-4">Are you sure you want to delete this data?</p>
         <div className="flex justify-end">
           <button
             className="bg-red-500 text-white px-4 py-2 rounded-md mr-2"

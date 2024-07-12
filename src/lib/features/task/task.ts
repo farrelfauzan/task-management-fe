@@ -79,7 +79,6 @@ export const createTask: any = createAsyncThunk(
 export const updateTask: any = createAsyncThunk(
   "task/updateTask",
   async ({ id, data }: { id: string; data: UpdateTaskDto }) => {
-    console.log(id, data);
     try {
       const response = await api.task.taskControllerUpdate(id, data);
       return response.data;
@@ -184,7 +183,6 @@ export const taskReducer = createSlice({
       });
     builder
       .addCase(createTask.fulfilled, (state, action) => {
-        console.log(action.payload);
         if (action.payload.status === "todo") {
           state.data.todo.items.push(action.payload);
         }
@@ -251,7 +249,6 @@ export const taskReducer = createSlice({
       });
     builder
       .addCase(deleteTask.fulfilled, (state, action) => {
-        console.log(action.payload);
         if (action.payload.status === "todo") {
           // remove item
           const result = state.data.todo.items.filter(

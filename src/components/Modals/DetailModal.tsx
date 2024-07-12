@@ -79,7 +79,6 @@ const DetailModal = ({
       toast.error("Failed to update task", {
         autoClose: 1500,
       });
-      console.log(error);
     }
   };
 
@@ -232,7 +231,6 @@ const DetailModal = ({
       </form>
       {openDeleteModal && (
         <ConfirmDeleteModal
-          taskId={taskId}
           isOpen={openDeleteModal}
           onClose={onCloseDeleteModal}
           setOpen={setOpenDeleteModal}

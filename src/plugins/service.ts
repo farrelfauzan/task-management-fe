@@ -33,6 +33,7 @@ api.instance.interceptors.response.use(
   async (error: AxiosError) => {
     if (error.response?.status === 401) {
       console.log("Unauthorized");
+      window.location.href = "/login";
     }
 
     return Promise.reject(error);

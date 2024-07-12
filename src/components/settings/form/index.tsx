@@ -5,7 +5,6 @@ import { useSelector } from "react-redux";
 
 const SettingsForm = () => {
   const session = useSelector(sessionData);
-  console.log(session);
   const {
     register,
     handleSubmit,

@@ -22,7 +22,6 @@ const AddModal = ({
   defaultStatus,
 }: AddModalProps) => {
   const dispatch = useDispatch();
-
   const users = useSelector(userData);
 
   const closeModal = () => {
@@ -46,13 +45,6 @@ const AddModal = ({
   });
 
   const onSubmit: SubmitHandler<CreateTaskDto> = async (data) => {
-    console.log(data);
-    // if (data.status === "") {
-    //   return setError("status", {
-    //     type: "manual",
-    //     message: "Status is required",
-    //   });
-    // }
     try {
       const response = await dispatch(
         createTask({
@@ -69,7 +61,6 @@ const AddModal = ({
       reset();
       closeModal();
     } catch (error: any) {
-      console.log(error);
       toast.error(error.message, {
         autoClose: 1500,
       });

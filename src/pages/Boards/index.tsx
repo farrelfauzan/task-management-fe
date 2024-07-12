@@ -3,8 +3,8 @@ import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 import { useEffect, useState } from "react";
 import { Columns } from "../../types";
 import { AddOutline } from "react-ionicons";
-import AddModal from "../../components/Modals/AddModal";
-import Task from "../../components/Task";
+import AddModal from "../../components/modals/AddModal";
+import Task from "../../components/task";
 import { useDispatch } from "react-redux";
 import {
   getTasks,
@@ -15,7 +15,7 @@ import {
 } from "../../lib/features/task/task";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import DetailModal from "../../components/Modals/DetailModal";
+import DetailModal from "../../components/modals/DetailModal";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -29,7 +29,6 @@ const Home = () => {
   const [modalDetailOpen, setModalDetailOpen] = useState(false);
 
   const openModal = (columnId: any) => {
-    console.log(columnId);
     setSelectedColumn(columnId);
     setModalOpen(true);
   };
@@ -56,8 +55,6 @@ const Home = () => {
     };
     fetchData();
   }, []);
-
-  console.log(task);
 
   async function onDragEnd(result: any) {
     dispatch(
@@ -168,7 +165,6 @@ const Home = () => {
                                   provided={provided}
                                   task={task}
                                   onClickDetail={(id) => {
-                                    console.log("ini task", task);
                                     dispatch(setTask(task));
                                     setTaskId(id);
                                     setModalDetailOpen(true);
