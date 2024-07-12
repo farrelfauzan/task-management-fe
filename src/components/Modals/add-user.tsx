@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { CreateUserDto } from "../../swagger/api";
 import { CreateUser } from "../../lib/features/auth/auth";
 import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
 
 interface AddUserModalProps {
   isOpen: boolean;
