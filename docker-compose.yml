@@ -1,9 +1,10 @@
-version: '3.8'
+version: "3.8"
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
+    restart: always
     ports:
       - "${EXPOSED_PORT}:3000"
     env_file:
